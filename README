@@ -1,0 +1,89 @@
+Joc Battleship
+
+Cerinta 1 - meniu
+	Meniul este creat prin apelul functiei "optiune". Aceasta se foloseste de
+functia "initmeniu" care afiseaza scheletul meniului, apoi coloreaza optiunile
+date in functie de pozitia pe care o alege jucatorul, alegerea facandu-se prin
+intermediul sagetilor, apoi enter.
+	Optiunea "New Game" va conduce la ecranul de selectie a hartilor. Alegerea
+din hartile date ca argumente in linia de comanda se face prin functiile
+"initalharta" (afiseaza scheletul meniului pentru harti) si "alegharta" care
+coloreaza optiunea curenta. Alegerea se face prin sageti + enter. Odata ce
+am ales harta, va aparea ecranul jocului: in stanga se afla harta playerului,
+in care sunt vizibile navele, harta pe care trebuie sa o ghiceasca computerul,
+in dreapta harta computerului, ascunsa, pe care  trebuie sa o ghiceasca 
+jucatorul.
+	Optiunea "Resume Game" va conduce fie la afisarea ferestrei care anunta ca
+nu exista vreun joc de reluat, fie direct la ecranul jocului, cu toate navele
+descoperite deja afisate.
+	Optiunea "Quit" va conduce la inchiderea jocului.
+
+Cerinta 2 - harti
+	Hartile jucatorului, trimise ca argumente in linia de comanda, contin
+perechi de coordonate, una sub cealalta, care reprezinta locurile unde se
+gasesc partile navelor(de exemplu, daca in configuratie regasim perechile 0 1,
+0 2, 0 3 inseamna ca pe linia 0 regasim o nava de 3 intre coloanele 1-3).
+Aceste harti sunt memorate succesiv, una dupa alta, intr-o matrice, si prin
+alegerea hartii se va salva intr-o matrice auxiliara harta corespunzatoare.
+	Harta computerului este generata aleator prin functia "genhartacomp".
+Aceasta creeaza intr-o matrice auxiliara navele (functiile nave4, nave3, nave2,
+nave1). Pentru a asigura ca se respecta restrictiile, fiecare nava creata este
+bordata, astfel nicio alta nava nu poate sa fie asezata langa ea, prin functia
+"bordarenave".
+	La apelul functiei "newgame", dupa ce jucatorul alege harta, aceasta este
+mutata din matricea auxiliara in matricea "player", unde este formata special
+pentru afisare. Dupa afisare, se genereaza harta computerului, care este la
+randul ei formatata special, in matricea "computer".
+	Aceasta "formatare speciala" contine de fapt si bordurile matricei,
+elementele intregii matrice fiind caractere memorate dupa codurile ASCII.
+(Initial am vrut sa fac afisarea gridurilor complet din matricile hartilor,
+dar ulterior am schimbat modul de afisare, insa am pastrat formatul special).
+	Cele mai importante coduri sunt:
+* 88 (afisat ca o casuta mov) - parte nedistrusa a unei nave
+* 33 (afisat ca o casuta verde) - parte distrusa a unei nave
+* 34 (afisat X colorat cu highlight verde) - parte distrusa a unei nave, inainte
+											 de randomizare
+* 32 (afisat spatiu) - casuta nealeasa
+* 35 (afisat ca o casuta galbena) - casuta aleasa pe care nu exista nimic
+
+Cerinta 3 - joc
+	In functia "newgame", respectiv in "resumegame", este apelata functia
+"gameplay", in care este implementat jocul propriu-zis.
+	Cand este tura jucatorului, este apelata functia "alegereplayer". Jucatorul
+poate alege orice casuta goala de e gridul computerului prin sageti, apoi enter.
+Functia este implementata astfel incat dupa ce o casuta a fost descoperita, nu
+se mai poate selecta din nou. (Acest lucru insa aduce o problema: te poti bloca,
+nemaiputand sa iesi decat prin selectarea casutei curente sau la un moment dat
+pot exista casute la care se poate ajunge doar daca se epuizeaza restul
+mutarilor posibile; as fi putut rezolva aceasta problema daca as fi implementat
+si mouse-ul).
+	Cand este tura computerului, este apelata functia "alegerecomputer". Sunt
+generate perechi de numere aleatorii pana cand se ajunge la coordonatele unei
+casute care nu a fost deja aleasa.
+	In "gameplay" se verfica pentru fiecare jucator daca tura sa s-a terminat,
+dar si daca cumva a ghicit toate navele celuilalt. De asemenea, se mai verifica
+si daca s-au apasat tastele pentru puteri sau quit.
+
+Cerinta 4 - puteri
+	Randomise map: Avem functia "randomise", care verifica mai intai ce fel de
+nave raman dupa randomizare si cate din fiecare tip (printr-un vector ajutator)
+apoi genereaza aleator o noua harta, memorata mai intai intr-o matrice
+auxiliara, prin fuctiile nave4, nave3, nave2 si nave1. Aceasta noua harta este
+combinata cu cea veche din care raman navele deja lovite. (Asa am inteles din
+cerinta din pdf; am citit pe forum ca trebuia sa dispara si aceste bucati deja
+lovite, dar nu am mai avut timp sa schimb codul).
+	Destroy in advance: Avem functia "destroy" care genereaza perechi de
+coordonate, mai intai pentru player, verificand si daca cumva prin aceasta
+alegere castiga jocul, apoi pentru computer, verificand acelasi lucru.
+
+Cerinta 5 - final
+	Atunci cand jocul se termina, apare o fereastra in care se precizeaza cine
+a castigat si numarul navelor doborate de fiecare jucator (care se afla prin
+functia "navedistruse"). Numarul total al navelor este 10, dar functia
+"randomise" sterge din memorie navele distruse, asadar se modifica si numarul
+navelor. De aceea, computerul poate castiga jocul chiar daca pare ca a ghicit
+mai putine nave decat playerul. 
+
+Bonus:
+- interfata colorata, cu cateva animatii
+- posibilitatea alegerii unei harti din lista
